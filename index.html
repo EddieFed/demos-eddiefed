@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>title</title>
+    
+    <script>
+    
+    
+function pix() {
+
+let image = document.getElementById("i");
+
+var width = image.clientWidth;
+var height = image.clientHeight;
+  
+var canvas = document.createElement('canvas');
+canvas.width = width;
+canvas.height = height;
+
+canvas.style.cssText = 'image-rendering: optimizeSpeed;' + // FireFox < 6.0
+                         'image-rendering: -moz-crisp-edges;' + // FireFox
+                         'image-rendering: -o-crisp-edges;' +  // Opera
+                         'image-rendering: -webkit-crisp-edges;' + // Chrome
+                         'image-rendering: crisp-edges;' + // Chrome
+                         'image-rendering: -webkit-optimize-contrast;' + // Safari
+                         'image-rendering: pixelated; ' + // Future browsers
+                         '-ms-interpolation-mode: nearest-neighbor;'; // IE
+                         
+var context = canvas.getContext('2d');
+
+context.webkitImageSmoothingEnabled = false;
+  context.mozImageSmoothingEnabled = false;
+  context.msImageSmoothingEnabled = false;
+  context.imageSmoothingEnabled = false;
+  
+  var percent = 0.2;
+  
+  
+var scaledWidth = width * percent;
+  var scaledHeight = height * percent;
+  
+  context.drawImage(image, 0, 0, scaledWidth, scaledHeight);
+  
+  
+  context.drawImage(canvas, 0, 0, scaledWidth, scaledHeight, 0, 0, width, height);
+  
+  
+  image["src"] = canvas.toDataURL();
+  
+  
+}
+
+
+    </script>
+  </head>
+  <body>
+  
+    <img id="i" src="90567CD8-51AD-4374-A75F-A58178FE18CC.jpeg" onclick="pix()">
+ 
+  </body>
+</html>
