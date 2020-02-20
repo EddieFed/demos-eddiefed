@@ -1,63 +1,17 @@
 <!DOCTYPE html>
-<html>
-  <head>
+<html lang="en">
+<head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>demos</title>
-    
-    <script>
-    
-    
-function pix() {
+    <title>Index</title>
+    <script src="dynamic-list.js"></script>
+</head>
+<body onload="getDemos()">
 
-let image = document.getElementById("i");
+<h1>Here's my little demos</h1>
 
-var width = image.clientWidth;
-var height = image.clientHeight;
-  
-var canvas = document.createElement('canvas');
-canvas.width = width;
-canvas.height = height;
+<ul id="list">
+    <!--  This list will dynamically fill with the dirs of my demos  -->
+</ul>
 
-canvas.style.cssText = 'image-rendering: optimizeSpeed;' + // FireFox < 6.0
-                         'image-rendering: -moz-crisp-edges;' + // FireFox
-                         'image-rendering: -o-crisp-edges;' +  // Opera
-                         'image-rendering: -webkit-crisp-edges;' + // Chrome
-                         'image-rendering: crisp-edges;' + // Chrome
-                         'image-rendering: -webkit-optimize-contrast;' + // Safari
-                         'image-rendering: pixelated; ' + // Future browsers
-                         '-ms-interpolation-mode: nearest-neighbor;'; // IE
-                         
-var context = canvas.getContext('2d');
-
-context.webkitImageSmoothingEnabled = false;
-  context.mozImageSmoothingEnabled = false;
-  context.msImageSmoothingEnabled = false;
-  context.imageSmoothingEnabled = false;
-  
-  var percent = 0.1;
-  
-  
-var scaledWidth = width * percent;
-  var scaledHeight = height * percent;
-  
-  context.drawImage(image, 0, 0, scaledWidth, scaledHeight);
-  
-  
-  context.drawImage(canvas, 0, 0, scaledWidth, scaledHeight, 0, 0, width, height);
-  
-  
-  image["src"] = canvas.toDataURL();
-  
-  
-}
-
-
-    </script>
-  </head>
-  <body>
-  
-    <img id="i" width="200" src="https://i.ytimg.com/vi/MEZV6EE8JMA/hq720.jpg?sqp=-oaymwEZCOgCEMoBSFXyq4qpAwsIARUAAIhCGAFwAQ==&rs=AOn4CLD27xA-pUM2Tpaed9Zv73dmSkGTXQ?1579650737988" onclick="pix()">
- 
-  </body>
+</body>
 </html>

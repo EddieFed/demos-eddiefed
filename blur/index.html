@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <title>demos</title>
+
+        <script>
+            function pix() {
+
+                let image = document.getElementById("i");
+
+                let width = image.clientWidth;
+                let height = image.clientHeight;
+
+                let canvas = document.createElement('canvas');
+                canvas.width = width;
+                canvas.height = height;
+
+                canvas.style.cssText = 'image-rendering: optimizeSpeed;' + // FireFox < 6.0
+                    'image-rendering: -moz-crisp-edges;' + // FireFox
+                    'image-rendering: -o-crisp-edges;' +  // Opera
+                    'image-rendering: -webkit-crisp-edges;' + // Chrome
+                    'image-rendering: crisp-edges;' + // Chrome
+                    'image-rendering: -webkit-optimize-contrast;' + // Safari
+                    'image-rendering: pixelated; ' + // Future browsers
+                    '-ms-interpolation-mode: nearest-neighbor;'; // IE
+
+                let context = canvas.getContext('2d');
+
+                context.webkitImageSmoothingEnabled = false;
+                context.mozImageSmoothingEnabled = false;
+                context.msImageSmoothingEnabled = false;
+                context.imageSmoothingEnabled = false;
+
+                let percent = 0.1;
+
+
+                let scaledWidth = width * percent;
+                let scaledHeight = height * percent;
+
+                context.drawImage(image, 0, 0, scaledWidth, scaledHeight);
+
+
+                context.drawImage(canvas, 0, 0, scaledWidth, scaledHeight, 0, 0, width, height);
+
+
+                image["src"] = canvas.toDataURL();
+
+
+            }
+
+
+        </script>
+    </head>
+    <body>
+
+        <img id="i" width="500" src="img.jpeg" onclick="pix()" alt="">
+
+    </body>
+</html>
