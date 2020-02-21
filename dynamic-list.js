@@ -25,3 +25,18 @@ function addListElement(dir) {
 
     document.getElementById("list").appendChild(li)
 }
+
+function getMD() {
+    fetch("https://api.github.com/repos/eddiefed/demos-eddiefed/readme")
+        .then(r => r.json())
+        .then(function(d) {
+            console.log(d);
+            console.log(atob(d["content"]));
+        });
+}
+
+fetch("https://api.github.com/markdown/raw", {
+    method: "post",
+    body: "Hello!"
+})
+.then(r => console.log(r));
