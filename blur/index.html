@@ -1,5 +1,34 @@
 <!DOCTYPE html>
-<html lang="es">
+
+    <!--
+    So this is just me showing that I can pixelate and blur an image,
+    this is intended for a chrome extension im working on
+
+    ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░
+    ░ ░ █ █ █ ░ ░ ░ █ █ █ ░ ░ ░ ░ ░ ░ █ ░ ░ █ ░ ░ ░ ░ ░ █ █ ░ ░ ░ ░ ░
+    ░ █ ░ ░ ░ █ ░ █ ░ ░ ░ █ ░ ░ ░ ░ ░ █ █ ░ █ █ ░ █ █ █ █ ░ ░ ░ ░ ░ ░
+    ░ █ ░ ░ ░ ░ █ ░ ░ ░ ░ █ ░ ░ ░ ░ ░ ░ █ █ █ █ █ █ ░ ░ ░ ░ ░ ░ ░ ░ ░
+    ░ ░ █ ░ ░ ░ ░ ░ ░ ░ █ ░ ░ ░ ░ █ █ █ █ █ █ █ █ █ ░ ░ ░ ░ ░ ░ ░ ░ ░
+    ░ ░ ░ █ ░ ░ ░ ░ ░ █ ░ ░ ░ █ █ ░ ░ ░ ░ ░ ░ ░ ░ █ █ █ ░ ░ ░ ░ ░ ░ ░
+    ░ ░ ░ ░ █ ░ ░ ░ █ ░ ░ ░ ░ █ ░ ░ ░ ░ █ ░ ░ █ ░ ░ ░ █ █ ░ ░ ░ ░ ░ ░
+    ░ ░ ░ ░ ░ █ ░ █ ░ ░ ░ ░ ░ █ ░ ░ ░ ░ █ ░ ░ █ ░ ░ ░ ░ █ ░ ░ ░ ░ ░ ░
+    ░ ░ ░ ░ ░ ░ █ ░ ░ ░ ░ ░ ░ █ █ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ █ ░ ░ ░ ░ ░ ░
+    ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ █ █ █ █ █ ░ ░ ░ ░ ░ █ █ ░ ░ ░ ░ ░ ░ ░
+    ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ █ █ █ █ █ █ █ ░ ░ ░ ░ ░ ░ ░ ░
+    ░ ░ ░ ░ ░ ░ ░ ░ █ █ █ █ ░ ░ ░ ░ ░ ░ ░ █ ░ ░ ░ █ █ █ █ ░ ░ ░ ░ ░ ░
+    ░ ░ ░ ░ ░ ░ ░ ░ █ ░ ░ █ █ █ █ █ █ ░ ░ █ ░ ░ ░ █ ░ ░ █ ░ ░ ░ ░ ░ ░
+    ░ ░ ░ ░ ░ ░ █ █ █ ░ ░ ░ ░ ░ ░ ░ █ ░ ░ █ ░ █ █ █ ░ ░ █ █ █ █ █ █ ░
+    ░ ░ ░ ░ ░ ░ █ ░ ░ ░ ░ ░ ░ ░ ░ █ ░ ░ ░ █ ░ █ ░ ░ ░ ░ ░ ░ ░ ░ ░ █ ░
+    ░ ░ ░ ░ ░ ░ █ ░ ░ ░ ░ █ █ █ █ ░ ░ ░ ░ █ ░ █ ░ ░ ░ █ █ █ █ █ █ ░ ░
+    ░ ░ ░ ░ ░ ░ █ █ █ █ █ █ █ ░ ░ ░ ░ █ █ █ ░ █ █ █ █ █ █ ░ ░ ░ ░ ░ ░
+    ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ █ █ █ █ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░
+    ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ █ █ ░ ░ █ █ █ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░
+    ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ █ ░ ░ ░ ░ ░ ░ █ █ ░ ░ ░ ░ ░ ░ ░ ░ ░
+    ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░
+
+     - Eddie
+    -->
+<html lang="en">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -9,7 +38,6 @@
             function pix() {
 
                 let image = document.getElementById("i");
-
                 let width = image.clientWidth;
                 let height = image.clientHeight;
 
@@ -17,37 +45,29 @@
                 canvas.width = width;
                 canvas.height = height;
 
-                canvas.style.cssText = 'image-rendering: optimizeSpeed;' + // FireFox < 6.0
-                    'image-rendering: -moz-crisp-edges;' + // FireFox
-                    'image-rendering: -o-crisp-edges;' +  // Opera
-                    'image-rendering: -webkit-crisp-edges;' + // Chrome
-                    'image-rendering: crisp-edges;' + // Chrome
-                    'image-rendering: -webkit-optimize-contrast;' + // Safari
-                    'image-rendering: pixelated; ' + // Future browsers
-                    '-ms-interpolation-mode: nearest-neighbor;'; // IE
+                canvas.style.cssText =  'image-rendering: optimizeSpeed;' + // FireFox < 6.0
+                                        'image-rendering: -moz-crisp-edges;' + // FireFox
+                                        'image-rendering: -o-crisp-edges;' +  // Opera
+                                        'image-rendering: -webkit-crisp-edges;' + // Chrome
+                                        'image-rendering: crisp-edges;' + // Chrome
+                                        'image-rendering: -webkit-optimize-contrast;' + // Safari
+                                        'image-rendering: pixelated; ' + // Future browsers
+                                        '-ms-interpolation-mode: nearest-neighbor;'; // IE
 
                 let context = canvas.getContext('2d');
-
                 context.webkitImageSmoothingEnabled = false;
                 context.mozImageSmoothingEnabled = false;
                 context.msImageSmoothingEnabled = false;
                 context.imageSmoothingEnabled = false;
 
                 let percent = 0.1;
-
-
                 let scaledWidth = width * percent;
                 let scaledHeight = height * percent;
 
                 context.drawImage(image, 0, 0, scaledWidth, scaledHeight);
-
-
                 context.drawImage(canvas, 0, 0, scaledWidth, scaledHeight, 0, 0, width, height);
 
-
-                image["src"] = canvas.toDataURL();
-
-
+                image.src = canvas.toDataURL();
             }
 
 
@@ -55,7 +75,7 @@
     </head>
     <body>
 
-        <img id="i" width="500" src="img.jpeg" onclick="pix()" alt="">
+        <img id="i" width="800" src="img.jpeg" onclick="pix()" alt="">
 
     </body>
 </html>
