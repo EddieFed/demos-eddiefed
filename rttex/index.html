@@ -75,12 +75,7 @@
                         // link.download = downloadFile.name;
                         // link.click();
 
-                        console.info({
-                            size: `w${width} x h${height}`,
-                            packedSize: `w${packedWidth} x h${packedHeight}`,
-                            compressed: true,
-                            usesAlpha: Boolean(alpha)
-                        });
+                        console.info(`size: w${width} x h${height}\npackedSize: w${packedWidth} x h${packedHeight}\ncompressed: ${true}\nusesAlpha: ${Boolean(alpha)}`);
 
                         var imagedata = new Uint8Array(buffer, 0x7C);
                         var pointer = 0x00;
@@ -104,14 +99,13 @@
                                 }
                             }
                         }
-                        console.log(rawImage);
 
                         var c = document.getElementById("canvas");
                         var ctx = c.getContext("2d");
                         c.height = height;
                         c.width = width;
 
-                        var iData = ctx.getImageData(0,0,width,height);
+                        var iData = ctx.getImageData(0, 0, width, packedHeight);
                         iData.data.set(rawImage);
                         
                         // Since bitmaps start at the bottom left, transform accordingly
