@@ -20,7 +20,7 @@ function addListElement(dir) {
     let li = document.createElement("LI");
     let a = document.createElement("A");
     a.innerText = dir;
-    a.href = ("./" + dir);
+    a.href = ("./" + dir + "/");
     li.appendChild(a);
 
     document.getElementById("list").appendChild(li)
