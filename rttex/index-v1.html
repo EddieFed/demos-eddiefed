@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <!-- We will use pako to inflate compressed rttex files -->
+    <!-- https://github.com/nodeca/pako -->
+    <script src="https://cdn.jsdelivr.net/pako/1.0.3/pako.min.js"></script>
+
+    <script>
+
+        var file;
+
+        function uploadFile() {
+            file = document.getElementById("file-upload").files[0];
+
+            console.log(file);
+
+            var reader = new FileReader();
+
+            reader.onloadend = (e) => {
+
+                // We need to be able to edit the actual hex data of the file, this is the best way to do so
+                var newFile = new Uint8Array(e.target.result);
+                console.log(newFile);
+                
+                var fileHeader = String.fromCharCode.apply(null, newFile.slice(0x00, 0x06));
+                console.info(`File header is ${fileHeader}!`);                
+
+                if(fileHeader === "RTPACK") {
+
+                    // If the header is correct we need to use pako to inflate the compressed data
+                    newFile = pako.inflate(newFile.slice(32));
+                    console.info('inflated file!');
+
+                    // File header should have changed, let's check again to make sure it's still valid
+                    fileHeader = String.fromCharCode.apply(null, newFile.slice(0, 6));
+                    console.info(`New file header is ${fileHeader}!`); 
+
+                    if(fileHeader !== "RTTXTR") {
+                        console.warn("That's not a valid .rttex file!");
+                    }
+
+                    var cInt = (bytes) => {
+                        var total = 0;
+                        bytes.forEach((byte) => {
+                            console.log(byte);
+                            total += byte;
+                        });
+                    };
+
+                    // God I love javascript
+                    // I swear it feels like cheating ebing bale to do shit shitty type conversion like this
+                    var packedHeight = new Uint32Array(newFile.slice(8, 12))[0];
+
+                    // newFile.slice(8, 12) -- [byte, byte, byte, byte]
+                    var packedHeight2 = newFile.slice(8, 12)
+
+                    var packedWidth = new Uint32Array(newFile.slice(12, 16))[0];
+                    var height = new Uint32Array(newFile.slice(20, 24))[0];
+                    var width = new Uint32Array(newFile.slice(24, 28))[0];
+                    console.info(`Image size is ${width} x ${height}\nPacked size is ${packedWidth} x ${packedHeight}`);
+
+                    var alpha = newFile[28];    // 0x1C
+                    var bmpPointer = 124;  // 0x7C
+
+                    var result = [];
+
+                    for(var h = packedHeight - 1; h >= 0; h--) {
+                        for(var w = 0; w < packedWidth; w++) {
+
+                            // Bitmap data looks like
+                            // RBGA [red, green, blue, alpha]
+                            // RBG  [red, green, blue]
+
+                            if(alpha && w < width) {
+                                result.push(newFile[bmpPointer++]);
+                                result.push(newFile[bmpPointer++]);
+                                result.push(newFile[bmpPointer++]);
+                                result.push(newFile[bmpPointer++]);
+                            }
+                            else if(w < width) {
+                                result.push(newFile[bmpPointer++]);
+                                result.push(newFile[bmpPointer++]);
+                                result.push(newFile[bmpPointer++]);
+                            }
+                            else {
+                                // I love these things
+                                // Just ignore areas that are packed
+                                alpha ? bmpPointer += 4 : bmpPointer += 3; 
+                            }
+                        }
+                    }
+
+                    // console.log(result);
+
+                    var iData = new ImageData(new Uint8ClampedArray(result.slice(0, width*packedHeight*4)), width, height);
+
+                    var c = document.getElementById("canvas");
+                    var ctx = c.getContext("2d");
+
+                    c.height = height;
+                    c.width = width;
+
+                    ctx.clearRect(0, 0, c.width, c.height);
+                    ctx.putImageData(iData, 0, 0);
+
+                }
+                else {
+                    console.warn("That's not a valid .rttex file!");
+                }
+
+            };
+
+            reader.readAsArrayBuffer(file);
+
+
+        }
+
+
+
+    </script>
+
+</head>
+<body>
+
+
+    <input type="file" id="file-upload" name="filename" onclick="document.getElementById('submit-button').style.visibility = 'visible';">
+    <input id="submit-button" type="submit" style="visibility: hidden;" onclick="uploadFile();">
+
+    <br>
+
+    <canvas id="canvas" width="0" height="0"></canvas>
+    
+</body>
+</html>

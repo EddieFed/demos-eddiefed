@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <!-- We will use pako to inflate compressed rttex files -->
+    <!-- https://github.com/nodeca/pako -->
+    <script src="https://cdn.jsdelivr.net/pako/1.0.3/pako.min.js"></script>
+
+</head>
+<body style="background-color: black;">
+
+
+    <input type="file" id="file-upload" name="filename" />
+
+    <br>
+
+    <canvas id="canvas" width="0" height="0"></canvas>
+
+    
+    <script>
+        // New script on bottom yeet
+        var input = document.getElementById("file-upload");
+        input.addEventListener("change", () => {
+
+            // Creates a file stream
+            var reader = new FileReader();
+
+            reader.addEventListener('loadend', () => {
+
+                // The plain array of the bytes of the rttex file
+                var buffer  = reader.result;
+                var data    = new Uint8Array(buffer);
+
+                // If the header is correct we need to use pako to inflate the compressed data
+                var fileHeader = String.fromCharCode.apply(null, data.slice(0x00, 0x06));
+                // console.info(`File header is "${fileHeader}!"`);
+
+                if(fileHeader === "RTPACK") {
+
+                    // If the header is correct we need to use pako to inflate the compressed data
+                    data  = pako.inflate(data.slice(0x20));
+                    // console.info('This is a compressed file! Inflating!');
+
+                    // File header should have changed, let's check again to make sure it's still valid
+                    fileHeader = String.fromCharCode.apply(null, data.slice(0x00, 0x06));
+                    // console.info(`File header is ${fileHeader}!`); 
+
+                    if(fileHeader === "RTTXTR") {
+
+                        // God I love javascript
+                        // I swear it feels like cheating being able to do shitty type conversion like this
+                        buffer              = data.buffer
+                        var headerView    = new DataView(buffer);
+
+                        var packedHeight    = headerView.getUint32(0x08, true);
+                        var packedWidth     = headerView.getUint32(0x0C, true);
+                        var height          = headerView.getUint32(0x14, true);
+                        var width           = headerView.getUint32(0x18, true);
+                        // console.info(`Image size is ${width} x ${height}\nPacked size is ${packedWidth} x ${packedHeight}`);
+
+                        var alpha       = headerView.getUint8(0x1C, true);  // Byte 28
+                        // console.info(`Alpha boolean: ${alpha}`);
+
+                        // This was for testing to download the decompressed RTTEX file
+                        // var downloadFile = new File([buffer], "image.rttex", {
+                        //     type: "application/octet-stream"
+                        // });
+
+                        // var link = document.createElement("a");
+                        
+                        // link.href = URL.createObjectURL(downloadFile);
+                        // link.download = downloadFile.name;
+                        // link.click();
+
+                        console.info({
+                            size: `w${width} x h${height}`,
+                            packedSize: `w${packedWidth} x h${packedHeight}`,
+                            compressed: true,
+                            usesAlpha: Boolean(alpha)
+                        });
+
+                        var imagedata = new Uint8Array(buffer, 0x7C);
+                        var pointer = 0x00;
+
+                        var rawImage = [];
+                        for (var h = packedHeight - 1; h >= 0; h--) {
+                            // and by each width
+                            for (var w = 0; w < packedWidth; w++) {
+                                if (alpha && w < width) {
+                                    // Fetch rgba data from the bitmap, if alpha it should be byte,byte,byte,byte per pixel
+                                    rawImage.push(...imagedata.slice(pointer, pointer+0x04));
+                                    pointer += 0x04;
+                                } else if (w < width) {
+                                    // Fetch rgb data from the bitmap, if not alpha it should be byte,byte,byte per pixel, and completely opaque
+                                    rawImage.push(...imagedata.slice(pointer, pointer+0x03));
+                                    rawImage.push(255);
+                                    pointer += 0x03;
+                                } else {
+                                    // Skip pointer on packed width areas, since we don't need them.
+                                    alpha ? pointer += 0x04 : pointer += 0x03;
+                                }
+                            }
+                        }
+                        console.log(rawImage);
+
+                        var c = document.getElementById("canvas");
+                        var ctx = c.getContext("2d");
+                        c.height = height;
+                        c.width = width;
+
+                        var iData = ctx.getImageData(0,0,width,height);
+                        iData.data.set(rawImage);
+                        
+                        // Since bitmaps start at the bottom left, transform accordingly
+                        ctx.putImageData(iData, 0, -(packedHeight - height));
+                        ctx.transform(1, 0, 0, -1, 0, c.height)
+                        ctx.globalCompositeOperation = "copy";
+                        ctx.drawImage(c, 0, 0);
+                        ctx.globalCompositeOperation = "source-over";
+
+                    }
+                }
+            });
+
+            // Gives the file as a raw array of bytes
+            reader.readAsArrayBuffer(input.files[0]);
+
+        });
+
+    </script>
+    
+</body>
+</html>

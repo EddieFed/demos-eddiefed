@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+</head>
+<body>
+
+    <input type="file" id="file-upload" name="filename" />
+    <input id="submit-button" type="submit" />
+    
+    <script>
+        var input = document.getElementById("file-upload");
+        input.addEventListener("change", () => {
+
+            // Creates a file stream
+            var reader = new FileReader();
+
+            reader.addEventListener('loadend', () => {
+
+                // The plain array of the bytes
+                var buffer = reader.result;
+
+                // This viewer is kinda cool!
+                // I can grab any specific data from any offset and 
+                var header = new DataView(buffer, 0x02);
+
+                
+
+            });
+
+            // Gives the file as a raw array of bytes
+            reader.readAsArrayBuffer(input.files[0]);
+
+        });
+
+        
+
+    </script>
+
+
+</body>
+</html>
